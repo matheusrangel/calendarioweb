@@ -1,12 +1,17 @@
 package br.edu.ifpb.calendario.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -27,6 +32,9 @@ public class Usuario {
 	@Type(type="true_false")
 	@Column
 	private Boolean admin;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Anotacao> anotacoes =  new ArrayList<Anotacao>();
 	
 	public Long getId() {
 		return id;
