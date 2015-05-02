@@ -44,8 +44,6 @@ public class CalendarioServlet extends HttpServlet {
 	public void login(HttpServletRequest request, HttpServletResponse response){
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
-		
-		
 	}
 	
 	public void cadastro(HttpServletRequest request, HttpServletResponse response){
