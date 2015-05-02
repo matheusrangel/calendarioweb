@@ -20,7 +20,7 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 		    <property name="javax.persistence.jdbc.password" value="123" />
 		    
 		    <property name="hibernate.hbm2ddl.auto" value="create"/>	
-		    <property name="hibernate.showSql" value="true"/>    
+		    <property name="hibernate.show_sql" value="true"/>    
 		</properties>
 	</persistence-unit>
 </persistence>
