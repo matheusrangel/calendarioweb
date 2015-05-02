@@ -20,11 +20,11 @@
 	<script src='js/lang-all.js'></script>
 
 	<script>
-		$(document).ready(function() {
+		{$(document).ready(function() {
 		    $('#calendar').fullCalendar({
 		       lang: 'pt-br'
 		    })
-		});
+		});}
 	</script>
 </head>
 <body>
