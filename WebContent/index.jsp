@@ -1,33 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Calendário Web</title>
-	
-	<meta charset='utf-8' />
-	<!-- Bootstrap -->
-	<script src='js/bootstrap.min.js'></script>
-	<link href='css/bootstrap.min.css' rel='stylesheet' />
+<title>Calendário Web</title>
+<meta charset='utf-8' />
+<%@ include file="js/calendario.js"%>
+<style>
+body {
+	margin: 40px 0px 0px 0px;
+	padding: 0px;
+	font-size: 14px;
+}
 
-	<!-- FullCalendar -->
-	<link href='css/fullcalendar.min.css' rel='stylesheet' />
-	<link href='css/fullcalendar.print.css' rel='stylesheet' media='print' />
-	<script src='js/moment.min.js'></script>
-	<script src='js/jquery.min.js'></script>
-	<script src='js/fullcalendar.min.js'></script>
-	<script src='js/lang-all.js'></script>
+#calendar {
+	padding: 40px 40px;
+}
 
-	<script>
-		$(document).ready(function() {
-		    $('#calendar').fullCalendar({
-		       lang: 'pt-br'
-		    })
-		});
-	</script>
+.panel-footer {
+	text-align: center;
+	margin-bottom: 0px;
+}
+
+.navbar-brand{
+	align: center;
+}
+</style>
 </head>
 <body>
-	<div id='calendar'></div>
+	<div class="panel panel-default">
+		<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+			<div class="container">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">MVCalendar</a>
+						<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse" data-target="#menuCollapse">
+							<span class="sr-only">Toggle navigation</span> 
+							<span class="icon-bar"></span> 
+							<span class="icon-bar"></span> 
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse" id="menuCollapse">
+						<ul class="nav navbar-nav navbar-right">
+							<c:if test="${empty sessionScope.usuario}">
+								<li><a href="login.jsp">Logar</a></li>
+							</c:if>
+
+							<c:if test="${sessionScope.usuario!=null}">
+								<p class="navbar-text">Bem-Vindo, ${sessionScope.usuario}</p>
+								<li><a href="control?op=sair">Sair</a></li>
+							</c:if>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<div class="panel-body">
+			<div class="container" role="main">
+				<div id='calendar'></div>
+			</div>
+		</div>
+		<div class="panel-footer">Desenvolvido por Matheus Rangel e
+			Victor Pereira.
+		</div>
+	</div>
 </body>
 </html>
