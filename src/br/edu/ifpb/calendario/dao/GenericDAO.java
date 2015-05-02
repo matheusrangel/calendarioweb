@@ -19,8 +19,7 @@ public class GenericDAO<T> implements InterfaceDAO<T> {
 
 	protected static EntityManager getManager(){
 		if(manager==null){
-			EntityManagerFactory factory = 
-				Persistence.createEntityManagerFactory("calendario");
+			EntityManagerFactory factory = Persistence.createEntityManagerFactory("calendario");
 			manager = factory.createEntityManager();
 		}
 		return manager;

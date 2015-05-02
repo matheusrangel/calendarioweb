@@ -14,7 +14,7 @@
 <div class="panel panel-default" id="painel-login">
 		<div class="panel-heading">Cadastro</div>
 		<div class="panel-body">
-			<form action="" method="post" class="form-horizontal">
+			<form action="calendario.do?op=cadastro" method="post" class="form-horizontal">
 				<div class="form-group" id="inputs-login">
 					<input type="text" class="form-control" name="nome" placeholder="Nome"><br>
 					<input type="text" class="form-control" name="login" placeholder="Login"><br>

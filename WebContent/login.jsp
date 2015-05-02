@@ -16,7 +16,7 @@
 	<div class="panel panel-default" id="painel-login">
 		<div class="panel-heading">Faça Login</div>
 		<div class="panel-body">
-			<form action="" method="post" class="form-horizontal">
+			<form action="calendario.do?op=login" method="post" class="form-horizontal">
 				<div class="form-group" id="inputs-login">
 					<input type="text" class="form-control" name="login" placeholder="Login"><br>
 					<input type="password" class="form-control" name="senha" placeholder="Senha">
