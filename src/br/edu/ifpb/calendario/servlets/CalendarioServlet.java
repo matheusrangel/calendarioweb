@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import br.edu.ifpb.calendario.dao.UsuarioDAO;
 import br.edu.ifpb.calendario.models.Usuario;
@@ -19,7 +20,7 @@ public class CalendarioServlet extends HttpServlet {
     public CalendarioServlet() {
         super();
     }
-
+   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
@@ -56,6 +57,8 @@ public class CalendarioServlet extends HttpServlet {
 		usuarioDAO.persist(usuario);
 		usuarioDAO.commit();
 		usuarioDAO.close();
+		
+		
 	}
 
 }
