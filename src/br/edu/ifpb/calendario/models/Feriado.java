@@ -15,6 +15,10 @@ import org.hibernate.annotations.Type;
 @Entity
 public class Feriado {
 	
+	public Feriado() {
+		super();
+	}
+	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;

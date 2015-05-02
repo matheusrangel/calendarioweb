@@ -2,16 +2,23 @@ package br.edu.ifpb.calendario.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 public class Anotacao {
+	
+	public Anotacao() {
+		super();
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -23,6 +30,15 @@ public class Anotacao {
 	@Column
 	private String mensagem;
 	
+	@ManyToOne(cascade = CascadeType.ALL)
+	private Usuario usuario;
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 	public Long getId() {
 		return id;
 	}

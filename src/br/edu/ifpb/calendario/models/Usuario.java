@@ -16,6 +16,11 @@ import org.hibernate.annotations.Type;
 
 @Entity
 public class Usuario {
+	
+	public Usuario() {
+		super();
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -33,7 +38,7 @@ public class Usuario {
 	@Column
 	private Boolean admin;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Anotacao> anotacoes =  new ArrayList<Anotacao>();
 	
 	public Long getId() {
