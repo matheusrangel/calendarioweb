@@ -16,9 +16,9 @@
 		<div class="panel-body">
 			<form action="calendario.do?op=cadastro" method="post" class="form-horizontal">
 				<div class="form-group" id="inputs-login">
-					<input type="text" class="form-control" name="nome" placeholder="Nome"><br>
-					<input type="text" class="form-control" name="login" placeholder="Login"><br>
-					<input type="password" class="form-control" name="senha" placeholder="Senha">
+					<input type="text" class="form-control" name="nome" placeholder="Nome" required><br>
+					<input type="text" class="form-control" name="login" placeholder="Login" required><br>
+					<input type="password" class="form-control" name="senha" placeholder="Senha" required>
 				</div>
 				<input type="submit" class="btn btn-default" value="Cadastrar-se">
 			</form>
