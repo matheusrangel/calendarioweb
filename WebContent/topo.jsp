@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
 			<div class="container">
 				<div class="container-fluid">
@@ -18,7 +19,7 @@
 							</c:if>
 
 							<c:if test="${sessionScope.usuario!=null}">
-								<p class="navbar-text">Bem-vindo,
+								<p class="navbar-text">Olá,
 									${sessionScope.usuario.nome}!</p>
 								<li><a href="control?op=sair">Sair</a></li>
 							</c:if>
