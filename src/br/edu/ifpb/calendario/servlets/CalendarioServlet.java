@@ -43,15 +43,17 @@ public class CalendarioServlet extends HttpServlet {
 			break;
 		}
 	}
+	
 
 	public void login(HttpServletRequest request, HttpServletResponse response){
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		Usuario usuario = new Usuario();
+
 	}
+
 
 	public void cadastraUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
+
 
 		usuario = usuarioDAO.findByLogin(request.getParameter("login").toLowerCase());
 		
@@ -69,7 +71,5 @@ public class CalendarioServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 		
-		
 	}
-
 }
