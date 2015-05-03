@@ -2,7 +2,6 @@ package br.edu.ifpb.calendario.servlets;
 
 import java.io.IOException;
 
-import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -61,7 +60,6 @@ public class CalendarioServlet extends HttpServlet {
 		}
 	}
 
-
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
@@ -83,7 +81,6 @@ public class CalendarioServlet extends HttpServlet {
 	public void cadastraUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
-
 
 		usuario = usuarioDAO.findByLogin(request.getParameter("login").toLowerCase());
 
