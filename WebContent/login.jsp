@@ -11,26 +11,30 @@
 <script src='js/bootstrap.min.js'></script>
 
 <title>Login</title>
+<%@ include file="css/style.css"%>
 </head>
 <body>
-	<div class="panel panel-default" id="painel-login">
 	<%@ include file="topo.jsp"%>
-	<c:if test="${not empty erro}">
+	<div class="panel panel-default" id="painel-login">
+		<c:if test="${not empty erro}">
 			<div class="alert alert-danger fade in">
 				<span>${erro}</span>
 			</div>
 		</c:if>
 		<div class="panel-heading">Faça Login</div>
 		<div class="panel-body">
-			<form action="calendario.do?op=login" method="post" class="form-horizontal">
+			<form action="calendario.do?op=login" method="post"
+				class="form-horizontal">
 				<div class="form-group" id="inputs-login">
-					<input type="text" class="form-control" name="login" placeholder="Login"><br>
-					<input type="password" class="form-control" name="senha" placeholder="Senha">
+					<input type="text" class="form-control" name="login"
+						placeholder="Login"><br> <input type="password"
+						class="form-control" name="senha" placeholder="Senha">
 				</div>
 				<input type="submit" class="btn btn-default" value="Entrar">
 				<a href="cadastro.jsp" style="float: right;">Cadastrar-se</a>
 			</form>
 		</div>
 	</div>
+	<%@ include file="rodape.jsp"%>
 </body>
 </html>

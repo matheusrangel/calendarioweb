@@ -1,0 +1,18 @@
+<style>
+body {
+	font-size: 14px;
+}
+
+#calendar {
+	margin-top: 40px;
+	padding: 40px 40px;
+}
+
+.panel panel-default{
+	margin-top: 1px;
+}
+
+.panel-footer {
+	text-align: center;
+}
+</style>
