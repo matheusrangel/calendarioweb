@@ -13,8 +13,8 @@
 					</div>
 					<div class="collapse navbar-collapse" id="menuCollapse">
 						<ul class="nav navbar-nav navbar-right">
-							<li><a href="cadastro.jsp">Cadastro</a></li>
 							<c:if test="${empty sessionScope.usuario}">
+								<li><a href="cadastro.jsp">Cadastro</a></li>
 								<li><a href="login.jsp">Logar</a></li>
 							</c:if>
 
