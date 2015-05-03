@@ -3,7 +3,7 @@
 			<div class="container">
 				<div class="container-fluid">
 					<div class="navbar-header">
-						<a class="navbar-brand" href="index.jsp">CalendarioWeb</a>
+						<a class="navbar-brand" href="index.jsp">MVCalendar</a>
 						<button type="button" class="navbar-toggle collapsed"
 							data-toggle="collapse" data-target="#menuCollapse">
 							<span class="sr-only">Toggle navigation</span> <span
