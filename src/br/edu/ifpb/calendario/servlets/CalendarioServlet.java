@@ -25,7 +25,7 @@ public class CalendarioServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String op = request.getParameter("op");
-		
+
 		switch (op) {
 		case "logoff":
 			logoff(request, response);
@@ -52,12 +52,12 @@ public class CalendarioServlet extends HttpServlet {
 			break;
 		}
 	}
-	
+
 
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
-		
+
 		usuario = usuarioDAO.findByLogin(request.getParameter("login"));
 		if (usuario != null && usuario.getSenha().equals(request.getParameter("senha"))) {
 			HttpSession session = request.getSession();
@@ -78,23 +78,41 @@ public class CalendarioServlet extends HttpServlet {
 
 
 		usuario = usuarioDAO.findByLogin(request.getParameter("login").toLowerCase());
-		
+
 		if (usuario == null) {
 			usuario = new Usuario();
 			usuario.setLogin(request.getParameter("login").toLowerCase());
 			usuario.setNome(request.getParameter("nome"));
 			usuario.setSenha(request.getParameter("senha"));
-			usuarioDAO.persist(usuario);
-			usuarioDAO.close();
-			response.sendRedirect("login.jsp");
+			String admin = request.getParameter("admin");
+
+			if (admin != null) {
+				if (admin.equals("true") && !usuarioDAO.existeAdmin()) {
+					usuario.setAdmin(true);
+					usuarioDAO.persist(usuario);
+					usuarioDAO.close();
+					response.sendRedirect("login.jsp");
+				} else if (admin.equals("true") && usuarioDAO.existeAdmin()) {
+					request.setAttribute("erro", "Já existe um admin!");
+					RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
+					rd.forward(request, response);
+				}
+			} else {
+				usuarioDAO.persist(usuario);
+				usuarioDAO.close();
+				response.sendRedirect("login.jsp");
+			}
+
+
+
 		} else {
 			request.setAttribute("erro", "Login ja existe!");
 			RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
 			rd.forward(request, response);
 		}
-		
+
 	}
-	
+
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(false);
 		if (session != null) {

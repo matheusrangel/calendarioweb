@@ -17,8 +17,23 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 		return findAll(Usuario.class);
 	}
 
-	public Usuario findByCodigo(String valor) {
-		return super.findByField(Usuario.class, "codigo", valor);
+	public Usuario findById(String valor) {
+		return super.findByField(Usuario.class, "id", valor);
+	}
+	
+	public Boolean existeAdmin() {
+		String classe = Usuario.class.getName();
+		String campo = "admin";
+		int i = classe.lastIndexOf(".");
+		classe=classe.substring(i+1);
+		Query query = manager.createQuery("select x from " + classe + " x " +
+				"where x." + campo + " = 'T'");
+		List <Usuario> usuarios =  query.getResultList();
+		if(usuarios.size() > 0){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public Usuario findByLogin(String login){
