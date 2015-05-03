@@ -11,19 +11,24 @@
 <title>Cadastro</title>
 </head>
 <body>
-<c:if test="${not empty erro}">
-	<div class="alert alert-danger fade in">
-		<span>${erro}</span>
-	</div>
-</c:if>
-<div class="panel panel-default" id="painel-login">
+	<%@ include file="topo.jsp"%>
+
+	<div class="panel panel-default" id="painel-login">
+		<c:if test="${not empty erro}">
+			<div class="alert alert-danger fade in">
+				<span>${erro}</span>
+			</div>
+		</c:if>
 		<div class="panel-heading">Cadastro</div>
 		<div class="panel-body">
-			<form action="calendario.do?op=cadastro" method="post" class="form-horizontal">
+			<form action="calendario.do?op=cadastro" method="post"
+				class="form-horizontal">
 				<div class="form-group" id="inputs-login">
-					<input type="text" class="form-control" name="nome" placeholder="Nome" required><br>
-					<input type="text" class="form-control" name="login" placeholder="Login" required><br>
-					<input type="password" class="form-control" name="senha" placeholder="Senha" required>
+					<input type="text" class="form-control" name="nome"
+						placeholder="Nome" required><br> <input type="text"
+						class="form-control" name="login" placeholder="Login" required><br>
+					<input type="password" class="form-control" name="senha"
+						placeholder="Senha" required>
 				</div>
 				<input type="submit" class="btn btn-default" value="Cadastrar-se">
 			</form>

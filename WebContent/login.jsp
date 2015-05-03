@@ -14,6 +14,12 @@
 </head>
 <body>
 	<div class="panel panel-default" id="painel-login">
+	<%@ include file="topo.jsp"%>
+	<c:if test="${not empty erro}">
+			<div class="alert alert-danger fade in">
+				<span>${erro}</span>
+			</div>
+		</c:if>
 		<div class="panel-heading">Faça Login</div>
 		<div class="panel-body">
 			<form action="calendario.do?op=login" method="post" class="form-horizontal">

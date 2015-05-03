@@ -66,7 +66,7 @@ public class CalendarioServlet extends HttpServlet {
 		} else {
 			request.setAttribute("erro", "Login ja existe!");
 			RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
-			rd.forward(request, response);;
+			rd.forward(request, response);
 		}
 		
 		
