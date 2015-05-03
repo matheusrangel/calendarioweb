@@ -31,10 +31,6 @@
 									class="form-control"></textarea>
 							</div>
 
-							<div class="form-group">
-								<input type="text" class="input-sm form-control datepicker"
-									id="evData" />
-							</div>
 							<button class="btn btn-primary pull-right" value=""
 								id="evBtnSalvar">Salvar</button>
 						</div>
