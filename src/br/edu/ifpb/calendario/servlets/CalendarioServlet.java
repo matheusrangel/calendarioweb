@@ -42,12 +42,13 @@ public class CalendarioServlet extends HttpServlet {
 		}
 	}
 	
-	public void login(HttpServletRequest request, HttpServletResponse response){
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		Usuario usuario = new Usuario();
+	public void login(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException{
+		response.sendRedirect("index.jsp");
 	}
 	
-	public void cadastro(HttpServletRequest request, HttpServletResponse response){
+	public void cadastro(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException{
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
 		usuario.setLogin(request.getParameter("login"));
@@ -58,7 +59,8 @@ public class CalendarioServlet extends HttpServlet {
 		usuarioDAO.commit();
 		usuarioDAO.close();
 		
-		
+		HttpSession session = request.getSession();
+		session.setAttribute("usuario", usuario);
+		response.sendRedirect("index.jsp");
 	}
-
 }

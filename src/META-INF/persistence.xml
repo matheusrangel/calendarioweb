@@ -12,7 +12,6 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 		<class>br.edu.ifpb.calendario.models.Feriado</class>
 		<class>br.edu.ifpb.calendario.models.Anotacao</class>
 
-
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="javax.persistence.jdbc.url"
