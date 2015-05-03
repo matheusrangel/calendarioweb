@@ -1,4 +1,4 @@
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
 	<div class="container">
 		<div class="container-fluid">
@@ -21,6 +21,9 @@
 					<c:if test="${sessionScope.usuario!=null}">
 						<c:if test="${sessionScope.usuario.admin!=null}">
 							<li><a href="alterarsenha.jsp">Alterar Senha</a></li>
+						</c:if>
+						<c:if test="${sessionScope.usuario.admin==null}">
+							<li><a href="calendario.do?op=excluirconta">Excluir Conta</a></li>
 						</c:if>
 						<p class="navbar-text">Olá, ${sessionScope.usuario.nome}!</p>
 						<li><a href="calendario.do?op=logoff">Sair</a></li>

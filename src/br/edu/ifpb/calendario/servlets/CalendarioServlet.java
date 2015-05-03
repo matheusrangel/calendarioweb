@@ -30,6 +30,10 @@ public class CalendarioServlet extends HttpServlet {
 		case "logoff":
 			logoff(request, response);
 			break;
+			
+		case "excluirconta":
+			excluirConta(request, response);
+			break;
 
 		default:
 			break;
@@ -147,12 +151,22 @@ public class CalendarioServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
 			rd.forward(request, response);
 		}
-
-
-
-
-
-
+	}
+	
+	public void excluirConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		if (usuario.getAdmin() == null) {
+			usuarioDAO.remove(usuario);
+			usuarioDAO.close();
+			logoff(request, response);
+		} else {
+			request.setAttribute("erro", "Admins não podem se excluir!");
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
