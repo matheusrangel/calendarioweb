@@ -28,7 +28,7 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 		classe=classe.substring(i+1);
 		Query query = manager.createQuery("select x from " + classe + " x " +
 				"where x." + campo + " = '" + login + "'");
-		List <Usuario> usuarios =  query.getResultList();
+		List<Usuario> usuarios =  query.getResultList();
 		if(usuarios.size() > 0){
 			return usuarios.get(0);
 		} else {

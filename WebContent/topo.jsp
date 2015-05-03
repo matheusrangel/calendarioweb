@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
 			<div class="container">
 				<div class="container-fluid">
@@ -21,7 +20,7 @@
 							<c:if test="${sessionScope.usuario!=null}">
 								<p class="navbar-text">Olá,
 									${sessionScope.usuario.nome}!</p>
-								<li><a href="control?op=sair">Sair</a></li>
+								<li><a href="calendario.do?op=logoff">Sair</a></li>
 							</c:if>
 
 						</ul>

@@ -2,7 +2,6 @@ package br.edu.ifpb.calendario.servlets;
 
 import java.io.IOException;
 
-import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +23,16 @@ public class CalendarioServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String op = request.getParameter("op");
+		
+		switch (op) {
+		case "logoff":
+			logoff(request, response);
+			break;
 
+		default:
+			break;
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,13 +52,21 @@ public class CalendarioServlet extends HttpServlet {
 		}
 	}
 	
-
-	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		Usuario usuario = usuarioDAO.findByLogin(request.getParameter("login").toLowerCase());
-		HttpSession session = request.getSession();
-		session.setAttribute("usuario", usuario);
-		response.sendRedirect("index.jsp");
+		Usuario usuario = new Usuario();
+		
+		usuario = usuarioDAO.findByLogin(request.getParameter("login"));
+		if (usuario != null && usuario.getSenha().equals(request.getParameter("senha"))) {
+			HttpSession session = request.getSession();
+			session.setAttribute("usuario", usuario);
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+		} else {
+			request.setAttribute("erro", "Login e/ou Senha Errada!");
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 
@@ -74,5 +90,13 @@ public class CalendarioServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 		
+	}
+	
+	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		response.sendRedirect("index.jsp");
 	}
 }
