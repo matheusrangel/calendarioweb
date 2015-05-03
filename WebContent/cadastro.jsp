@@ -11,6 +11,11 @@
 <title>Cadastro</title>
 </head>
 <body>
+<c:if test="${not empty erro}">
+	<div class="alert alert-danger fade in">
+		<span>${erro}</span>
+	</div>
+</c:if>
 <div class="panel panel-default" id="painel-login">
 		<div class="panel-heading">Cadastro</div>
 		<div class="panel-body">
