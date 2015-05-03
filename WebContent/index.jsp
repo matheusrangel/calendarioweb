@@ -31,6 +31,11 @@ body {
 <body>
 	<div class="panel panel-default">
 		<%@ include file="topo.jsp" %>
+		<c:if test="${not empty erro}">
+			<div class="alert alert-danger fade in">
+				<span>${erro}</span>
+			</div>
+		</c:if>
 		<div class="modal fade" id="evModal">
 			<div class="modal-dialog">
 				<div class="modal-content">

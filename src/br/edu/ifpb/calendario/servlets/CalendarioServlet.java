@@ -48,6 +48,10 @@ public class CalendarioServlet extends HttpServlet {
 			cadastraUsuario(request, response);
 			break;
 
+		case "alterarsenha":
+			alteraSenha(request, response);
+			break;
+
 		default:
 			break;
 		}
@@ -102,14 +106,52 @@ public class CalendarioServlet extends HttpServlet {
 				usuarioDAO.close();
 				response.sendRedirect("login.jsp");
 			}
-
-
-
 		} else {
 			request.setAttribute("erro", "Login ja existe!");
 			RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
 			rd.forward(request, response);
 		}
+
+	}
+
+	public void alteraSenha(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+		if (usuario.getAdmin() != null) {
+			String senhaAtual = request.getParameter("senha_atual");
+			String senhaNova = request.getParameter("senha_nova");
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+			if (senhaAtual.equals(senhaNova)) {
+				request.setAttribute("erro", "A senha nova não pode ser igual a atual.");
+				RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
+				rd.forward(request, response);
+			} else {
+				if (senhaAtual.equals(usuarioDAO.findByLogin(usuario.getLogin()).getSenha())) {
+					usuario.setSenha(senhaNova);
+					usuarioDAO.update(usuario);
+					usuarioDAO.close();
+					session.setAttribute("usuario", usuario);
+					RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+					rd.forward(request, response);
+
+				} else {
+					request.setAttribute("erro", "Senha atual não confere!");
+					RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
+					rd.forward(request, response);
+				}
+			}
+		} else {
+			request.setAttribute("erro", "Apenas o admin pode alterar senha!");
+			RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
+			rd.forward(request, response);
+		}
+
+
+
+
+
 
 	}
 
