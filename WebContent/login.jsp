@@ -11,10 +11,11 @@
 <script src='js/bootstrap.min.js'></script>
 
 <title>Login</title>
+<%@ include file="css/style.css"%>
 </head>
 <body>
-	<div class="panel panel-default" id="painel-login">
 	<%@ include file="topo.jsp"%>
+	<div class="panel panel-default" id="painel-login">
 	<c:if test="${not empty erro}">
 			<div class="alert alert-danger fade in">
 				<span>${erro}</span>
@@ -32,5 +33,7 @@
 			</form>
 		</div>
 	</div>
+	<%@ include file="rodape.jsp"%>
+	
 </body>
 </html>

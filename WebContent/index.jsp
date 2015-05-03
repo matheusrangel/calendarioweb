@@ -7,26 +7,7 @@
 <title>Calendário Web</title>
 <meta charset='utf-8' />
 <%@ include file="js/calendario.js"%>
-<style>
-body {
-	margin: 40px 0px 0px 0px;
-	padding: 0px;
-	font-size: 14px;
-}
-
-#calendar {
-	padding: 40px 40px;
-}
-
-.panel-footer {
-	text-align: center;
-	margin-bottom: 0px;
-}
-
-.navbar-brand {
-	align: center;
-}
-</style>
+<%@ include file="css/style.css"%>
 </head>
 <body>
 	<div class="panel panel-default">
@@ -66,8 +47,8 @@ body {
 				<div id='calendar'></div>
 			</div>
 		</div>
-		<div class="panel-footer">Desenvolvido por Matheus Rangel e
-			Victor Pereira.</div>
+		<%@ include file="rodape.jsp"%>
 	</div>
+	
 </body>
 </html>
