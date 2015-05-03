@@ -24,10 +24,14 @@ public class CalendarioServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String op = request.getParameter("op");
-		
+
 		switch (op) {
 		case "logoff":
 			logoff(request, response);
+			break;
+			
+		case "excluirconta":
+			excluirConta(request, response);
 			break;
 
 		default:
@@ -47,15 +51,19 @@ public class CalendarioServlet extends HttpServlet {
 			cadastraUsuario(request, response);
 			break;
 
+		case "alterarsenha":
+			alteraSenha(request, response);
+			break;
+
 		default:
 			break;
 		}
 	}
-	
+
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
 		Usuario usuario = new Usuario();
-		
+
 		usuario = usuarioDAO.findByLogin(request.getParameter("login"));
 		if (usuario != null && usuario.getSenha().equals(request.getParameter("senha"))) {
 			HttpSession session = request.getSession();
@@ -75,23 +83,89 @@ public class CalendarioServlet extends HttpServlet {
 		Usuario usuario = new Usuario();
 
 		usuario = usuarioDAO.findByLogin(request.getParameter("login").toLowerCase());
-		
+
 		if (usuario == null) {
 			usuario = new Usuario();
 			usuario.setLogin(request.getParameter("login").toLowerCase());
 			usuario.setNome(request.getParameter("nome"));
 			usuario.setSenha(request.getParameter("senha"));
-			usuarioDAO.persist(usuario);
-			usuarioDAO.close();
-			response.sendRedirect("login.jsp");
+			String admin = request.getParameter("admin");
+
+			if (admin != null) {
+				if (admin.equals("true") && !usuarioDAO.existeAdmin()) {
+					usuario.setAdmin(true);
+					usuarioDAO.persist(usuario);
+					usuarioDAO.close();
+					response.sendRedirect("login.jsp");
+				} else if (admin.equals("true") && usuarioDAO.existeAdmin()) {
+					request.setAttribute("erro", "Já existe um admin!");
+					RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
+					rd.forward(request, response);
+				}
+			} else {
+				usuarioDAO.persist(usuario);
+				usuarioDAO.close();
+				response.sendRedirect("login.jsp");
+			}
 		} else {
 			request.setAttribute("erro", "Login ja existe!");
 			RequestDispatcher rd = request.getRequestDispatcher("cadastro.jsp");
 			rd.forward(request, response);
 		}
-		
+
+	}
+
+	public void alteraSenha(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+		if (usuario.getAdmin() != null) {
+			String senhaAtual = request.getParameter("senha_atual");
+			String senhaNova = request.getParameter("senha_nova");
+			UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+			if (senhaAtual.equals(senhaNova)) {
+				request.setAttribute("erro", "A senha nova não pode ser igual a atual.");
+				RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
+				rd.forward(request, response);
+			} else {
+				if (senhaAtual.equals(usuarioDAO.findByLogin(usuario.getLogin()).getSenha())) {
+					usuario.setSenha(senhaNova);
+					usuarioDAO.update(usuario);
+					usuarioDAO.close();
+					session.setAttribute("usuario", usuario);
+					RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+					rd.forward(request, response);
+
+				} else {
+					request.setAttribute("erro", "Senha atual não confere!");
+					RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
+					rd.forward(request, response);
+				}
+			}
+		} else {
+			request.setAttribute("erro", "Apenas o admin pode alterar senha!");
+			RequestDispatcher rd = request.getRequestDispatcher("alterarsenha.jsp");
+			rd.forward(request, response);
+		}
 	}
 	
+	public void excluirConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		if (usuario.getAdmin() == null) {
+			usuarioDAO.remove(usuario);
+			usuarioDAO.close();
+			logoff(request, response);
+		} else {
+			request.setAttribute("erro", "Admins não podem se excluir!");
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+		}
+	}
+
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession(false);
 		if (session != null) {

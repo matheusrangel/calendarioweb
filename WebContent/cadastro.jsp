@@ -28,7 +28,8 @@
 						placeholder="Nome" required><br> <input type="text"
 						class="form-control" name="login" placeholder="Login" required><br>
 					<input type="password" class="form-control" name="senha"
-						placeholder="Senha" required>
+						placeholder="Senha" required><br>
+					<input type="checkbox" name="admin" value="true">admin
 				</div>
 				<input type="submit" class="btn btn-default" value="Cadastrar-se">
 			</form>

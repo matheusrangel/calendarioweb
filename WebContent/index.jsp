@@ -7,6 +7,7 @@
 <title>Calendário Web</title>
 <meta charset='utf-8' />
 <%@ include file="js/calendario.js"%>
+<%@ include file="js/modal.js"%>
 <%@ include file="css/style.css"%>
 </head>
 <body>
