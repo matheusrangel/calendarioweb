@@ -15,9 +15,25 @@
 <script>
 
 $(document).ready(function() {
-
 	$('#calendar').fullCalendar({
-		lang: 'pt-br'
+		editable : false,
+		selectable: true,
+		selectHelper: true,
+		lang: 'pt-br',
+		eventSources: [
+						{
+							<c:if test="${!empty anotacoes}">
+							events: [
+								${anotacoes}
+							],
+							color: 'blue',
+							textColor: 'white'
+							</c:if>
+			             }
+			           ],
+	 	monthNames:['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+                    'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
 	});
+
 });
 </script>

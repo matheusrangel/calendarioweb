@@ -1,6 +1,14 @@
 package br.edu.ifpb.calendario.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,8 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import br.edu.ifpb.calendario.dao.AnotacaoDAO;
 import br.edu.ifpb.calendario.dao.UsuarioDAO;
+import br.edu.ifpb.calendario.models.Anotacao;
 import br.edu.ifpb.calendario.models.Usuario;
+
+import com.google.gson.Gson;
 
 @WebServlet("/calendario.do")
 public class CalendarioServlet extends HttpServlet {
@@ -29,9 +41,21 @@ public class CalendarioServlet extends HttpServlet {
 		case "logoff":
 			logoff(request, response);
 			break;
-			
+
 		case "excluirconta":
 			excluirConta(request, response);
+			break;
+
+		case "eventos":
+			listarEventosUsuario(request, response);
+			break;
+
+		case "cadastrarAnotacao":
+			try {
+				cadastrarAnotacao(request, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			break;
 
 		default:
@@ -58,6 +82,50 @@ public class CalendarioServlet extends HttpServlet {
 		default:
 			break;
 		}
+	}
+
+	public void listarEventosUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		List<Anotacao> anotacoes = new ArrayList<Anotacao>();
+		anotacoes = usuario.getAnotacoes();
+		
+		StringBuilder listaAnotacoes = new StringBuilder();		
+		for (Anotacao anotacao : anotacoes) {
+			String data = new SimpleDateFormat("yyyy-MM-dd").format(anotacao.getData());
+			
+			listaAnotacoes.append("{");
+			listaAnotacoes.append("title: '"+anotacao.getMensagem()+"',");
+			listaAnotacoes.append("start: '"+data+"',");
+			listaAnotacoes.append("},");
+		}
+		
+		request.setAttribute("anotacoes", listaAnotacoes);
+		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+		rd.forward(request, response);
+	}
+
+	public void cadastrarAnotacao(HttpServletRequest request, HttpServletResponse response) throws ParseException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		AnotacaoDAO anotacaoDAO =  new AnotacaoDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Anotacao anotacao = new Anotacao();
+
+		String dataString = "2015-05-10";
+		Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataString);
+
+		anotacao.setData(data);
+		anotacao.setMensagem("Anotação Teste");
+		anotacao.setUsuario(usuario);
+		anotacaoDAO.persist(anotacao);
+		anotacaoDAO.close();
+		
+		usuario = usuarioDAO.findByLogin(usuario.getLogin());
+		usuarioDAO.close();
+		session.setAttribute("usuario", usuario);
+
+		response.sendRedirect("index.jsp");
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -149,12 +217,12 @@ public class CalendarioServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 	}
-	
+
 	public void excluirConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		
+
 		if (usuario.getAdmin() == null) {
 			usuarioDAO.remove(usuario);
 			usuarioDAO.close();

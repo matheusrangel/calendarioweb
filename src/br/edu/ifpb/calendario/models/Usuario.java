@@ -71,4 +71,10 @@ public class Usuario {
 	public void setAdmin(Boolean admin) {
 		this.admin = admin;
 	}
+	public List<Anotacao> getAnotacoes() {
+		return anotacoes;
+	}
+	public void setAnotacoes(List<Anotacao> anotacoes) {
+		this.anotacoes = anotacoes;
+	}
 }
