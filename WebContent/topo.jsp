@@ -23,6 +23,7 @@
 							<li><a href="alterarsenha.jsp">Alterar Senha</a></li>
 						</c:if>
 						<c:if test="${sessionScope.usuario.admin==null}">
+							<li><a href="calendario.do?op=cadastrarAnotacao">Cadastrar Anotação</a></li>
 							<li><a href="calendario.do?op=excluirconta">Excluir Conta</a></li>
 						</c:if>
 						<p class="navbar-text">Olá, ${sessionScope.usuario.nome}!</p>

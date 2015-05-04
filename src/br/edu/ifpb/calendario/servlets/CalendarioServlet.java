@@ -107,9 +107,10 @@ public class CalendarioServlet extends HttpServlet {
 
 	public void cadastrarAnotacao(HttpServletRequest request, HttpServletResponse response) throws ParseException, IOException {
 		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		AnotacaoDAO anotacaoDAO =  new AnotacaoDAO();
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Usuario usuarioSessao = (Usuario) session.getAttribute("usuario");
+		Usuario usuario = usuarioDAO.findByLogin(usuarioSessao.getLogin());
+		AnotacaoDAO anotacaoDAO =  new AnotacaoDAO();
 		Anotacao anotacao = new Anotacao();
 
 		String dataString = "2015-05-10";
@@ -120,12 +121,10 @@ public class CalendarioServlet extends HttpServlet {
 		anotacao.setUsuario(usuario);
 		anotacaoDAO.persist(anotacao);
 		anotacaoDAO.close();
-		
-		usuario = usuarioDAO.findByLogin(usuario.getLogin());
 		usuarioDAO.close();
+		
 		session.setAttribute("usuario", usuario);
-
-		response.sendRedirect("index.jsp");
+		response.sendRedirect("calendario.do?op=eventos");
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
