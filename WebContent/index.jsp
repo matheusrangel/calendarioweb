@@ -14,12 +14,22 @@
 	
 </script>
 <c:if test="${empty sessionScope.usuario.admin}">
-<%@ include file="calendario.jsp"%>
+	<%@ include file="calendario.jsp"%>
 </c:if>
 <%@ include file="css/style.css"%>
 </head>
 <body>
 	<%@ include file="topo.jsp"%>
+	<c:if test="${not empty sessionScope.usuario.admin}">
+		<c:redirect url="/calendario.do?op=painelferiados" />
+	</c:if>
+	<c:if test="${empty feriados}">
+		<c:redirect url="/calendario.do?op=eventos" />
+	</c:if>
+	
+	<div class="alert alert-danger fade in">
+		<span>${erro}</span>
+	</div>
 
 	<div class="container" role="main">
 		<div id='calendar'></div>

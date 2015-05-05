@@ -157,24 +157,10 @@ public class CalendarioServlet extends HttpServlet {
 	}
 
 	public void listarEventos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		
-		
 		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
-		List<Anotacao> anotacoes = new ArrayList<Anotacao>();
 		FeriadoDAO feriadoDAO = new FeriadoDAO();
 		List<Feriado> feriados = feriadoDAO.findAll();
-		anotacoes = usuario.getAnotacoes();
-
-		StringBuilder listaAnotacoes = new StringBuilder();		
-		for (Anotacao anotacao : anotacoes) {
-			String data = new SimpleDateFormat("yyyy-MM-dd").format(anotacao.getData());
-
-			listaAnotacoes.append("{");
-			listaAnotacoes.append("title: '"+anotacao.getMensagem()+"',");
-			listaAnotacoes.append("start: '"+data+"',");
-			listaAnotacoes.append("},");
-		}
+		
 		StringBuilder listaFeriados = new StringBuilder();		
 		for (Feriado feriado : feriados) {
 			String data = new SimpleDateFormat("yyyy-MM-dd").format(feriado.getData());
@@ -185,8 +171,25 @@ public class CalendarioServlet extends HttpServlet {
 			listaFeriados.append("},");
 		}
 		
+		if(session.getAttribute("usuario") != null) {
+			Usuario usuario = (Usuario) session.getAttribute("usuario");
+			List<Anotacao> anotacoes = new ArrayList<Anotacao>();
+			
+			anotacoes = usuario.getAnotacoes();
+
+			StringBuilder listaAnotacoes = new StringBuilder();		
+			for (Anotacao anotacao : anotacoes) {
+				String data = new SimpleDateFormat("yyyy-MM-dd").format(anotacao.getData());
+
+				listaAnotacoes.append("{");
+				listaAnotacoes.append("title: '"+anotacao.getMensagem()+"',");
+				listaAnotacoes.append("start: '"+data+"',");
+				listaAnotacoes.append("},");
+			}
+			request.setAttribute("anotacoes", listaAnotacoes);
+		}
+		
 		request.setAttribute("feriados", listaFeriados);
-		request.setAttribute("anotacoes", listaAnotacoes);
 		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 		rd.forward(request, response);
 	}
@@ -236,8 +239,7 @@ public class CalendarioServlet extends HttpServlet {
 		if (usuario != null && usuario.getSenha().equals(request.getParameter("senha"))) {
 			HttpSession session = request.getSession();
 			session.setAttribute("usuario", usuario);
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("calendario.do?op=eventos");
 		} else {
 			request.setAttribute("erro", "Login e/ou Senha Errada!");
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
@@ -302,7 +304,7 @@ public class CalendarioServlet extends HttpServlet {
 					usuarioDAO.update(usuario);
 					usuarioDAO.close();
 					session.setAttribute("usuario", usuario);
-					RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+					RequestDispatcher rd = request.getRequestDispatcher("calendario.do?op=eventos");
 					rd.forward(request, response);
 
 				} else {
@@ -329,7 +331,7 @@ public class CalendarioServlet extends HttpServlet {
 			logoff(request, response);
 		} else {
 			request.setAttribute("erro", "Admins não podem se excluir!");
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("calendario.do?op=eventos");
 			rd.forward(request, response);
 		}
 	}
@@ -430,6 +432,6 @@ public class CalendarioServlet extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-		response.sendRedirect("index.jsp");
+		response.sendRedirect("calendario.do?op=eventos");
 	}
 }
