@@ -21,15 +21,24 @@ $(document).ready(function() {
 		selectHelper: true,
 		lang: 'pt-br',
 		eventSources: [
+					<c:if test="${!empty anotacoes}">
 						{
-							<c:if test="${!empty anotacoes}">
 							events: [
 								${anotacoes}
 							],
 							color: 'blue',
 							textColor: 'white'
-							</c:if>
-			             }
+			             },
+			        </c:if>
+			        <c:if test="${!empty feriados}">
+						{
+							events: [
+								${feriados}
+							],
+							color: 'red',
+							textColor: 'white'
+				         },
+				     </c:if>
 			           ],
 	 	monthNames:['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
                     'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],

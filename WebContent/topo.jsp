@@ -20,6 +20,8 @@
 
 					<c:if test="${sessionScope.usuario!=null}">
 						<c:if test="${sessionScope.usuario.admin!=null}">
+							<li><a href="cadastroferiado.jsp">Cadastrar Feriado</a></li>
+							<li><a href="calendario.do?op=painelferiados">Painel</a></li>
 							<li><a href="alterarsenha.jsp">Alterar Senha</a></li>
 						</c:if>
 						<c:if test="${sessionScope.usuario.admin==null}">

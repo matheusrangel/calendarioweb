@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import br.edu.ifpb.calendario.dao.AnotacaoDAO;
+import br.edu.ifpb.calendario.dao.FeriadoDAO;
 import br.edu.ifpb.calendario.dao.UsuarioDAO;
 import br.edu.ifpb.calendario.models.Anotacao;
+import br.edu.ifpb.calendario.models.Feriado;
 import br.edu.ifpb.calendario.models.Usuario;
 
 import com.google.gson.Gson;
@@ -47,11 +49,15 @@ public class CalendarioServlet extends HttpServlet {
 			break;
 
 		case "eventos":
-			listarEventosUsuario(request, response);
+			listarEventos(request, response);
 			break;
 		
 		case "painelanotacoes":
 			exibirPainelUsuario(request, response);
+			break;
+			
+		case "painelferiados":
+			exibirPainelAdmin(request, response);
 			break;
 		
 		case "excluirAnotacao":
@@ -60,6 +66,14 @@ public class CalendarioServlet extends HttpServlet {
 			
 		case "editarAnotacao":
 			editarAnotacao(request, response);
+			break;
+		
+		case "excluirFeriado":
+			excluirFeriado(request, response);
+			break;
+			
+		case "editarFeriado":
+			editarFeriado(request, response);
 			break;
 
 		default:
@@ -98,6 +112,22 @@ public class CalendarioServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+			
+		case "cadastrarFeriado":
+			try {
+				cadastrarFeriado(request, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			break;
+			
+		case "salvarFeriado":
+			try {
+				salvarFeriado(request, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			break;
 
 		default:
 			break;
@@ -116,11 +146,24 @@ public class CalendarioServlet extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("painelanotacoes.jsp");
 		rd.forward(request, response);
 	}
+	
+	public void exibirPainelAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		FeriadoDAO feriadoDAO = new FeriadoDAO();
+		List<Feriado> feriados = feriadoDAO.findAll();
+		
+		request.setAttribute("feriados", feriados);
+		RequestDispatcher rd = request.getRequestDispatcher("paineladmin.jsp");
+		rd.forward(request, response);
+	}
 
-	public void listarEventosUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public void listarEventos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
+		
 		HttpSession session = request.getSession();
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		List<Anotacao> anotacoes = new ArrayList<Anotacao>();
+		FeriadoDAO feriadoDAO = new FeriadoDAO();
+		List<Feriado> feriados = feriadoDAO.findAll();
 		anotacoes = usuario.getAnotacoes();
 
 		StringBuilder listaAnotacoes = new StringBuilder();		
@@ -132,7 +175,17 @@ public class CalendarioServlet extends HttpServlet {
 			listaAnotacoes.append("start: '"+data+"',");
 			listaAnotacoes.append("},");
 		}
+		StringBuilder listaFeriados = new StringBuilder();		
+		for (Feriado feriado : feriados) {
+			String data = new SimpleDateFormat("yyyy-MM-dd").format(feriado.getData());
 
+			listaFeriados.append("{");
+			listaFeriados.append("title: '"+feriado.getDescricao()+"',");
+			listaFeriados.append("start: '"+data+"',");
+			listaFeriados.append("},");
+		}
+		
+		request.setAttribute("feriados", listaFeriados);
 		request.setAttribute("anotacoes", listaAnotacoes);
 		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 		rd.forward(request, response);
@@ -157,6 +210,22 @@ public class CalendarioServlet extends HttpServlet {
 		
 		session.setAttribute("usuario", usuario);
 		response.sendRedirect("calendario.do?op=eventos");
+	}
+	
+	public void cadastrarFeriado(HttpServletRequest request, HttpServletResponse response) throws ParseException, IOException {
+		FeriadoDAO feriadoDAO =  new FeriadoDAO();
+		Feriado feriado = new Feriado();
+
+		String descricao = request.getParameter("descricao");
+		String dataString = request.getParameter("data");
+		Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataString);
+
+		feriado.setData(data);
+		feriado.setDescricao(descricao);
+		feriadoDAO.persist(feriado);
+		feriadoDAO.close();
+		
+		response.sendRedirect("calendario.do?op=painelferiados");
 	}
 
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -283,6 +352,8 @@ public class CalendarioServlet extends HttpServlet {
 		rd.forward(request, response);
 	}
 	
+	
+	
 	public void editarAnotacao(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Long id = Long.parseLong(request.getParameter("id"));
 		AnotacaoDAO anotacaoDAO = new AnotacaoDAO();
@@ -314,6 +385,44 @@ public class CalendarioServlet extends HttpServlet {
 		
 		session.setAttribute("usuario", usuario);
 		response.sendRedirect("calendario.do?op=eventos");
+	}
+	
+	public void excluirFeriado(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		FeriadoDAO feriadoDAO = new FeriadoDAO();
+		Long id = Long.parseLong(request.getParameter("id"));
+		
+		Feriado feriado = feriadoDAO.findById(id);
+		feriadoDAO.remove(feriado);
+		feriadoDAO.close();
+		
+		response.sendRedirect("calendario.do?op=painelferiados");
+	}
+	
+	public void editarFeriado(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Long id = Long.parseLong(request.getParameter("id"));
+		FeriadoDAO feriadoDAO = new FeriadoDAO();
+		Feriado feriado = feriadoDAO.findById(id);
+		
+		request.setAttribute("feriado", feriado);
+		RequestDispatcher rd = request.getRequestDispatcher("editarFeriado.jsp");
+		rd.forward(request, response);
+	}
+	
+	public void salvarFeriado(HttpServletRequest request, HttpServletResponse response) throws ParseException, ServletException, IOException {
+		FeriadoDAO feriadoDAO = new FeriadoDAO();
+		
+		Long id = Long.parseLong(request.getParameter("id"));
+		String descricao = request.getParameter("descricao");
+		String dataString = request.getParameter("data");
+		Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataString);
+		
+		Feriado feriado = feriadoDAO.findById(id);
+		feriado.setData(data);
+		feriado.setDescricao(descricao);
+		feriadoDAO.update(feriado);
+		feriadoDAO.close();
+		
+		response.sendRedirect("calendario.do?op=painelferiados");
 	}
 
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -13,41 +13,13 @@
 <script>
 	
 </script>
+<c:if test="${empty sessionScope.usuario.admin}">
 <%@ include file="calendario.jsp"%>
+</c:if>
 <%@ include file="css/style.css"%>
 </head>
 <body>
 	<%@ include file="topo.jsp"%>
-
-	<div class="modal fade" id="myModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title"></h4>
-				</div>
-
-				<div class="modal-body">
-					<div class="container-fluid">
-						<div class="form-group">
-							<label for="annMensabem">Mensagem:</label>
-							<textarea name="" id="annMensagem" cols="30" rows="1"
-								class="form-control"></textarea>
-						</div>
-
-						<div class="form-group">
-							<label for="annData">Data:</label> <input type="text"
-								class="input-sm form-control datepicker" id="annData" />
-						</div>
-						<button class="btn btn-primary pull-right" value="" id="btnSalvar">Salvar</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<div class="container" role="main">
 		<div id='calendar'></div>
