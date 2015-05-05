@@ -50,14 +50,6 @@ public class CalendarioServlet extends HttpServlet {
 			listarEventosUsuario(request, response);
 			break;
 
-		case "cadastrarAnotacao":
-			try {
-				cadastrarAnotacao(request, response);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			break;
-
 		default:
 			break;
 		}
@@ -78,6 +70,14 @@ public class CalendarioServlet extends HttpServlet {
 		case "alterarsenha":
 			alteraSenha(request, response);
 			break;
+			
+		case "cadastrarAnotacao":
+			try {
+				cadastrarAnotacao(request, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			break;
 
 		default:
 			break;
@@ -89,17 +89,17 @@ public class CalendarioServlet extends HttpServlet {
 		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		List<Anotacao> anotacoes = new ArrayList<Anotacao>();
 		anotacoes = usuario.getAnotacoes();
-		
+
 		StringBuilder listaAnotacoes = new StringBuilder();		
 		for (Anotacao anotacao : anotacoes) {
 			String data = new SimpleDateFormat("yyyy-MM-dd").format(anotacao.getData());
-			
+
 			listaAnotacoes.append("{");
 			listaAnotacoes.append("title: '"+anotacao.getMensagem()+"',");
 			listaAnotacoes.append("start: '"+data+"',");
 			listaAnotacoes.append("},");
 		}
-		
+
 		request.setAttribute("anotacoes", listaAnotacoes);
 		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 		rd.forward(request, response);
@@ -107,21 +107,20 @@ public class CalendarioServlet extends HttpServlet {
 
 	public void cadastrarAnotacao(HttpServletRequest request, HttpServletResponse response) throws ParseException, IOException {
 		HttpSession session = request.getSession();
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		Usuario usuarioSessao = (Usuario) session.getAttribute("usuario");
-		Usuario usuario = usuarioDAO.findByLogin(usuarioSessao.getLogin());
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
 		AnotacaoDAO anotacaoDAO =  new AnotacaoDAO();
 		Anotacao anotacao = new Anotacao();
 
-		String dataString = "2015-05-10";
+		String mensagem = request.getParameter("mensagem");
+		String dataString = request.getParameter("data");
 		Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataString);
 
 		anotacao.setData(data);
-		anotacao.setMensagem("Anotação Teste");
+		anotacao.setMensagem(mensagem);
 		anotacao.setUsuario(usuario);
+		usuario.setAnotacao(anotacao);
 		anotacaoDAO.persist(anotacao);
 		anotacaoDAO.close();
-		usuarioDAO.close();
 		
 		session.setAttribute("usuario", usuario);
 		response.sendRedirect("calendario.do?op=eventos");

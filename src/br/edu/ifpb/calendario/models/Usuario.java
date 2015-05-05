@@ -38,7 +38,7 @@ public class Usuario {
 	@Column
 	private Boolean admin;
 	
-	@OneToMany(mappedBy="usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="usuario", cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
 	private List<Anotacao> anotacoes =  new ArrayList<Anotacao>();
 	
 	public Long getId() {
@@ -76,5 +76,8 @@ public class Usuario {
 	}
 	public void setAnotacoes(List<Anotacao> anotacoes) {
 		this.anotacoes = anotacoes;
+	}
+	public void setAnotacao(Anotacao anotacao) {
+		anotacoes.add(anotacao);
 	}
 }

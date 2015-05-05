@@ -30,7 +30,7 @@ public class Anotacao {
 	@Column
 	private String mensagem;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	private Usuario usuario;
 	
 	public Usuario getUsuario() {
