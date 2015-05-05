@@ -17,8 +17,8 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 		return findAll(Usuario.class);
 	}
 
-	public Usuario findById(String valor) {
-		return super.findByField(Usuario.class, "id", valor);
+	public Usuario findById(Long id) {
+		return super.findByField(Usuario.class, "id", id);
 	}
 	
 	public Boolean existeAdmin() {

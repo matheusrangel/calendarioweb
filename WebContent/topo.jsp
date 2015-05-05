@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="index.jsp">CalendarioWeb</a>
+				<a class="navbar-brand" href="calendario.do?op=eventos">CalendarioWeb</a>
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#menuCollapse">
 					<span class="sr-only">Toggle navigation</span> <span
@@ -13,8 +13,8 @@
 			</div>
 			<div class="collapse navbar-collapse" id="menuCollapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="cadastro.jsp">Cadastro</a></li>
 					<c:if test="${empty sessionScope.usuario}">
+						<li><a href="cadastro.jsp">Cadastro</a></li>
 						<li><a href="login.jsp">Logar</a></li>
 					</c:if>
 
@@ -25,9 +25,10 @@
 						<c:if test="${sessionScope.usuario.admin==null}">
 							<li><a href="cadastroanotacao.jsp">Cadastrar Anotação</a></li>
 							<li><a href="calendario.do?op=excluirconta">Excluir Conta</a></li>
+							<li><a href="calendario.do?op=painelanotacoes">Painel</a></li>
 						</c:if>
 						<p class="navbar-text">Olá, ${sessionScope.usuario.nome}!</p>
-						<li><a href="calendario.do?op=logoff">Sair</a></li>
+						<li><a style="text-color:white" href="calendario.do?op=logoff">Sair</a></li>
 					</c:if>
 
 				</ul>

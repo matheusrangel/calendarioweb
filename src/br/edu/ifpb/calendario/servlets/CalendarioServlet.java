@@ -49,6 +49,18 @@ public class CalendarioServlet extends HttpServlet {
 		case "eventos":
 			listarEventosUsuario(request, response);
 			break;
+		
+		case "painelanotacoes":
+			exibirPainelUsuario(request, response);
+			break;
+		
+		case "excluirAnotacao":
+			excluirAnotacao(request, response);
+			break;
+			
+		case "editarAnotacao":
+			editarAnotacao(request, response);
+			break;
 
 		default:
 			break;
@@ -78,10 +90,31 @@ public class CalendarioServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+			
+		case "salvarAnotacao":
+			try {
+				salvarAnotacao(request, response);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			break;
 
 		default:
 			break;
 		}
+	}
+	
+	public void exibirPainelUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		Usuario usuarioSessao = (Usuario) session.getAttribute("usuario");
+		Usuario usuario = usuarioDAO.findByLogin(usuarioSessao.getLogin());
+		List<Anotacao> anotacoes = new ArrayList<Anotacao>();
+		anotacoes = usuario.getAnotacoes();
+		
+		request.setAttribute("anotacoes", anotacoes);
+		RequestDispatcher rd = request.getRequestDispatcher("painelanotacoes.jsp");
+		rd.forward(request, response);
 	}
 
 	public void listarEventosUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -230,6 +263,57 @@ public class CalendarioServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 			rd.forward(request, response);
 		}
+	}
+	
+	public void excluirAnotacao(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuarioSession = (Usuario) session.getAttribute("usuario");
+		Long id = Long.parseLong(request.getParameter("id"));
+		AnotacaoDAO anotacaoDAO = new AnotacaoDAO();
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		Usuario usuario = usuarioDAO.findById(usuarioSession.getId());
+		Anotacao anotacao = anotacaoDAO.findById(id);
+		anotacaoDAO.remove(anotacao);
+		anotacaoDAO.close();
+		usuario.removeAnotacao(anotacao);
+		
+		session.setAttribute("usuario", usuario);
+		RequestDispatcher rd = request.getRequestDispatcher("calendario.do?op=eventos");
+		rd.forward(request, response);
+	}
+	
+	public void editarAnotacao(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Long id = Long.parseLong(request.getParameter("id"));
+		AnotacaoDAO anotacaoDAO = new AnotacaoDAO();
+		Anotacao anotacao = anotacaoDAO.findById(id);
+		
+		request.setAttribute("anotacao", anotacao);
+		RequestDispatcher rd = request.getRequestDispatcher("editarAnotacao.jsp");
+		rd.forward(request, response);
+		
+	}
+	
+	public void salvarAnotacao(HttpServletRequest request, HttpServletResponse response) throws ParseException, ServletException, IOException {
+		HttpSession session = request.getSession();
+		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		AnotacaoDAO anotacaoDAO = new AnotacaoDAO();
+		
+		Long id = Long.parseLong(request.getParameter("id"));
+		String mensagem = request.getParameter("mensagem");
+		String dataString = request.getParameter("data");
+		Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataString);
+		
+		Anotacao anotacao = anotacaoDAO.findById(id);
+		usuario.removeAnotacao(anotacao);
+		anotacao.setData(data);
+		anotacao.setMensagem(mensagem);
+		usuario.setAnotacao(anotacao);
+		anotacaoDAO.update(anotacao);
+		anotacaoDAO.close();
+		
+		session.setAttribute("usuario", usuario);
+		response.sendRedirect("calendario.do?op=eventos");
 	}
 
 	public void logoff(HttpServletRequest request, HttpServletResponse response) throws IOException {

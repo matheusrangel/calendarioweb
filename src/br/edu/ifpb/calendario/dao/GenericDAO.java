@@ -67,12 +67,12 @@ public class GenericDAO<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected T findByField(Class<T> classe, String campo, String valor)    {
+	protected T findByField(Class<T> classe, String campo, Long id)    {
 		String nome = classe.getName();
 		int i = nome.lastIndexOf(".");
 		nome=nome.substring(i+1);
 		Query query = manager.createQuery("select x from " + nome + " x " +
-				"where x." + campo + " = '" + valor + "'");
+				"where x." + campo + " = '" + id + "'");
 		return (T) query.getSingleResult();
 	}
 

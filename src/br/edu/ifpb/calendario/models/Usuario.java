@@ -78,6 +78,9 @@ public class Usuario {
 		this.anotacoes = anotacoes;
 	}
 	public void setAnotacao(Anotacao anotacao) {
-		anotacoes.add(anotacao);
+		this.anotacoes.add(anotacao);
+	}
+	public void removeAnotacao(Anotacao anotacao) {
+		this.anotacoes.remove(anotacao);
 	}
 }
