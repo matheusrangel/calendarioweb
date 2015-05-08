@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -203,7 +204,7 @@ public class CalendarioServlet extends HttpServlet {
 		String mensagem = request.getParameter("mensagem");
 		String dataString = request.getParameter("data");
 		Date data = new SimpleDateFormat("yyyy-MM-dd").parse(dataString);
-
+		
 		anotacao.setData(data);
 		anotacao.setMensagem(mensagem);
 		anotacao.setUsuario(usuario);
@@ -304,8 +305,7 @@ public class CalendarioServlet extends HttpServlet {
 					usuarioDAO.update(usuario);
 					usuarioDAO.close();
 					session.setAttribute("usuario", usuario);
-					RequestDispatcher rd = request.getRequestDispatcher("calendario.do?op=eventos");
-					rd.forward(request, response);
+					response.sendRedirect("calendario.do?op=eventos");
 
 				} else {
 					request.setAttribute("erro", "Senha atual não confere!");
@@ -322,11 +322,22 @@ public class CalendarioServlet extends HttpServlet {
 
 	public void excluirConta(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Usuario usuario = (Usuario) session.getAttribute("usuario");
+		Usuario usuarioSessao = (Usuario) session.getAttribute("usuario");
 		UsuarioDAO usuarioDAO = new UsuarioDAO();
-
+		Usuario usuario = usuarioDAO.findById(usuarioSessao.getId());
+		AnotacaoDAO anotacaoDAO = new AnotacaoDAO();
+		List<Anotacao> anotacoes = usuario.getAnotacoes();
+		
 		if (usuario.getAdmin() == null) {
-			usuarioDAO.remove(usuario);
+			for (Anotacao anotacao : anotacoes) {
+				anotacaoDAO.remove(anotacao);
+			}
+			anotacaoDAO.close();
+			
+			UsuarioDAO usuario2DAO = new UsuarioDAO();
+			Usuario usuario2 = usuarioDAO.findById(usuarioSessao.getId());
+			usuario2DAO.remove(usuario2);
+			usuario2DAO.close();
 			usuarioDAO.close();
 			logoff(request, response);
 		} else {
