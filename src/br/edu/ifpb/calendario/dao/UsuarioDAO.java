@@ -2,7 +2,9 @@
 package br.edu.ifpb.calendario.dao;
 
 import java.util.List;
+
 import javax.persistence.Query;
+
 import br.edu.ifpb.calendario.models.Usuario;
 
 public class UsuarioDAO extends GenericDAO<Usuario> {
@@ -26,7 +28,7 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 		classe=classe.substring(i+1);
 		Query query = manager.createQuery("select x from " + classe + " x " +
 				"where x." + campo + " = 'T'");
-		List<Usuario> usuarios =  query.getResultList();
+		List <Usuario> usuarios =  query.getResultList();
 		if(usuarios.size() > 0){
 			return true;
 		} else {

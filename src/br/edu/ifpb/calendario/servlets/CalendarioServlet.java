@@ -1,12 +1,16 @@
 package br.edu.ifpb.calendario.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +26,7 @@ import br.edu.ifpb.calendario.models.Anotacao;
 import br.edu.ifpb.calendario.models.Feriado;
 import br.edu.ifpb.calendario.models.Usuario;
 
+import com.google.gson.Gson;
 
 @WebServlet("/calendario.do")
 public class CalendarioServlet extends HttpServlet {

@@ -17,8 +17,8 @@
 $(document).ready(function() {
 	$('#calendar').fullCalendar({
 		editable : false,
-		selectable: false,
-		selectHelper: false,
+		selectable: true,
+		selectHelper: true,
 		lang: 'pt-br',
 		eventSources: [
 					<c:if test="${!empty anotacoes}">

@@ -8,14 +8,11 @@
 <script src='js/jquery.min.js'></script>
 <script src='js/bootstrap.min.js'></script>
 
-<title>Painel de Feriados</title>
+<title>Painel do Admin</title>
 <%@ include file="css/style.css"%>
 </head>
 <body>
 	<%@ include file="topo.jsp"%>
-	<c:if test="${empty sessionScope.usuario.admin}">
-		<c:redirect url="index.jsp"/>
-	</c:if>
 	<c:if
 		test="${not empty sessionScope.usuario.admin}">
 		<div class="panel panel-default" id="painel-login">
@@ -48,6 +45,6 @@
 			</div>
 		</div>
 	</c:if>
-	<!-- <%@ include file="rodape.jsp"%> -->
+	<%@ include file="rodape.jsp"%>
 </body>
 </html>
