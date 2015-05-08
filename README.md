@@ -1,2 +1,1 @@
-Matheus Rangel.    20102370286. matheusulysses159@gmail.com                                                                                    
-J. Victor Pereira. 20131370442. victordualib@gmail.com
+Projeto da disciplina de Programação para a Web II do IFPB - João Pessoa
