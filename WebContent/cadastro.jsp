@@ -29,12 +29,12 @@
 						class="form-control" name="login" placeholder="Login" required><br>
 					<input type="password" class="form-control" name="senha"
 						placeholder="Senha" required><br>
-					<input type="checkbox" name="admin" value="true">admin
+					<input type="checkbox" name="admin" value="true"> Administrador
 				</div>
 				<input type="submit" class="btn btn-default" value="Cadastrar-se">
 			</form>
 		</div>
 	</div>
-	<%@ include file="rodape.jsp"%>
+	<!-- <%@ include file="rodape.jsp"%> -->
 </body>
 </html>

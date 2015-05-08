@@ -35,6 +35,6 @@
 			</div>
 		</div>
 	</c:if>
-	<%@ include file="rodape.jsp"%>
+	<!-- <%@ include file="rodape.jsp"%>  -->
 </body>
 </html>

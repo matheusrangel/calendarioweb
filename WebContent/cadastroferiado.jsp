@@ -13,6 +13,9 @@
 </head>
 <body>
 	<%@ include file="topo.jsp"%>
+	<c:if test="${empty sessionScope.usuario.admin}">
+		<c:redirect url="index.jsp"/>
+	</c:if>
 	<c:if test="${not empty sessionScope.usuario.admin}">
 		<div class="panel panel-default" id="painel-login">
 			<c:if test="${not empty erro}">
@@ -33,6 +36,6 @@
 			</div>
 		</div>
 	</c:if>
-	<%@ include file="rodape.jsp"%>
+	<!-- <%@ include file="rodape.jsp"%>  -->
 </body>
 </html>

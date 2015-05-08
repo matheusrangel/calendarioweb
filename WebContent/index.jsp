@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Calendário Web</title>
+<title>MVCalendar</title>
 <meta charset='utf-8' />
 <link href='css/bootstrap.min.css' rel='stylesheet' />
 <link href='css/custom.css' rel='stylesheet' />

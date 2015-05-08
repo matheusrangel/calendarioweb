@@ -1,9 +1,7 @@
 package br.edu.ifpb.calendario.dao;
 
 import java.util.List;
-
 import br.edu.ifpb.calendario.models.Anotacao;
-import br.edu.ifpb.calendario.models.Usuario;
 
 public class AnotacaoDAO extends GenericDAO<Anotacao> {
 

@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="calendario.do?op=eventos">CalendarioWeb</a>
+				<a class="navbar-brand" href="calendario.do?op=eventos">MVCalendar</a>
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#menuCollapse">
 					<span class="sr-only">Toggle navigation</span> <span
@@ -14,25 +14,23 @@
 			<div class="collapse navbar-collapse" id="menuCollapse">
 				<ul class="nav navbar-nav navbar-right">
 					<c:if test="${empty sessionScope.usuario}">
-						<li><a href="cadastro.jsp">Cadastro</a></li>
-						<li><a href="login.jsp">Logar</a></li>
+						<li><a href="cadastro.jsp">Cadastre-se</a></li>
+						<li><a href="login.jsp">Login</a></li>
 					</c:if>
-
 					<c:if test="${sessionScope.usuario!=null}">
+						<p class="navbar-text">Olá, ${sessionScope.usuario.nome}!</p>
 						<c:if test="${sessionScope.usuario.admin!=null}">
+							<li><a href="calendario.do?op=painelferiados">Painel de Feriados</a></li>
 							<li><a href="cadastroferiado.jsp">Cadastrar Feriado</a></li>
-							<li><a href="calendario.do?op=painelferiados">Painel</a></li>
 							<li><a href="alterarsenha.jsp">Alterar Senha</a></li>
 						</c:if>
 						<c:if test="${sessionScope.usuario.admin==null}">
+							<li><a href="calendario.do?op=painelanotacoes">Painel de Anotações</a></li>
 							<li><a href="cadastroanotacao.jsp">Cadastrar Anotação</a></li>
 							<li><a href="calendario.do?op=excluirconta">Excluir Conta</a></li>
-							<li><a href="calendario.do?op=painelanotacoes">Painel</a></li>
 						</c:if>
-						<p class="navbar-text">Olá, ${sessionScope.usuario.nome}!</p>
-						<li><a style="text-color:white" href="calendario.do?op=logoff">Sair</a></li>
+						<li><a style="text-color:white" href="calendario.do?op=logoff">Logout</a></li>
 					</c:if>
-
 				</ul>
 			</div>
 		</div>
